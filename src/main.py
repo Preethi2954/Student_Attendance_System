@@ -1,6 +1,36 @@
 import csv
 import os
 
+def list_students():
+
+    STUDENT_FILE = os.path.join("students.csv")
+
+    print("\nList of Current Students:")
+
+    if not os.path.isfile(STUDENT_FILE):
+        print("No student data found.")
+        return
+
+    with open(STUDENT_FILE, mode="r") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+
+    if len(rows) <= 1:
+        print("No students found in the file.")
+        return
+
+    print(f"{'ID':<10} {'Name':<25}")
+    print("-" * 40)
+
+    for row in rows[1:]:
+        if len(row) >= 2:
+            print(f"{row[0]:<10} {row[1]:<25}")
+
+
+def generate_report():
+    import csv
+    import os
+    from datetime import datetime
 DATA_FILE = os.path.join("Students.csv")
 
 def add_students():
@@ -77,8 +107,6 @@ def add_students():
             break
         else:
             print("Invalid choice. Try again.")
-        
- 
 
 STUDENT_FILE = "students.csv"
 ATTENDANCE_FILE = "attendance.csv"
@@ -172,7 +200,6 @@ def generate_report():
     absent_count = 0
     no_entry_count = 0
 
-    # -- Clean and process attendance values
     cleaned_rows = []
     for row in data_rows:
         if len(row) < 4 or row[0].strip().lower() == "id":
@@ -195,21 +222,18 @@ def generate_report():
 
         cleaned_rows.append(row)
 
-    # -- Display the report
     print("\n Attendance Report:\n")
     print(f"{'ID':<10} {'Name':<20} {'Attendance':<15} {'Date':<12}")
     print("-" * 60)
     for row in cleaned_rows:
         print(f"{row[0]:<10} {row[1]:<20} {row[2]:<15} {row[3]:<12}")
 
-    # -- Print summary just below the table
     print("-" * 60)
     print(f"{'Summary':<10}")
     print(f"{'Present':<10}: {present_count}")
     print(f"{'Absent':<10}: {absent_count}")
     print(f"{'No Entry':<10}: {no_entry_count}")
 
-    # -- Save report to a new file
     report_filename = f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     with open(report_filename, mode="w", newline="") as rfile:
         writer = csv.writer(rfile)
@@ -218,7 +242,6 @@ def generate_report():
 
     print(f"\nReport saved as: {report_filename}")
 
-    # -- Clear the attendance.csv file (keep only header)
     with open(ATTENDANCE_FILE, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(header)
