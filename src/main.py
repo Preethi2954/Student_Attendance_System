@@ -1,11 +1,39 @@
 
-import csv
-import os
-from datetime import datetime
+def list_students():
 
-ATTENDANCE_FILE = "attendance.csv"
+    import csv
+    import os
+    STUDENT_FILE = os.path.join("students.csv")
+
+    print("\nList of Current Students:")
+
+    if not os.path.isfile(STUDENT_FILE):
+        print("No student data found.")
+        return
+
+    with open(STUDENT_FILE, mode="r") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+
+    if len(rows) <= 1:
+        print("No students found in the file.")
+        return
+
+    print(f"{'ID':<10} {'Name':<25}")
+    print("-" * 40)
+
+    for row in rows[1:]:
+        if len(row) >= 2:
+            print(f"{row[0]:<10} {row[1]:<25}")
+
 
 def generate_report():
+    import csv
+    import os
+    from datetime import datetime
+
+    ATTENDANCE_FILE = "attendance.csv"
+
     if not os.path.exists(ATTENDANCE_FILE):
         print("Attendance file not found.")
         return
@@ -79,6 +107,7 @@ def generate_report():
         writer.writerow(header)
 
     print("attendance.csv has been cleared.\n")
+    
     
 def menu():
     while True:
