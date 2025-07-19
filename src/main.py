@@ -1,5 +1,3 @@
-
-
 import csv
 import os
 
@@ -8,10 +6,10 @@ DATA_FILE = os.path.join("Students.csv")
 def add_students():
     while True:
         print("\n Student Management")
-        print(" Add Student")
-        print(" Update Student")
-        print(" Delete Student")
-        print(" Back to Main Menu")
+        print(" 1. Add Student")
+        print(" 2. Update Student")
+        print(" 3. Delete Student")
+        print(" 4. Back to Main Menu")
 
         choice = input("Enter your choice: ").strip()
 
@@ -79,15 +77,7 @@ def add_students():
             break
         else:
             print("Invalid choice. Try again.")
-            
-def generate_report():
-    import csv
-    import os
-    from datetime import datetime
-
-import csv
-import os
-from datetime import datetime
+        
  
 
 STUDENT_FILE = "students.csv"
@@ -96,36 +86,22 @@ ATTENDANCE_FILE = "attendance.csv"
 def mark_attendance():
     if not os.path.exists(STUDENT_FILE):
         print(" Student file not found.")
-
-def generate_report():
-    
-    ATTENDANCE_FILE = "attendance.csv"
-
-    if not os.path.exists(ATTENDANCE_FILE):
-        print("Attendance file not found.")
-
-        return
-
     date_today = datetime.now().strftime("%Y-%m-%d")
     attendance_records = []
 
-    # Read existing students
     with open(STUDENT_FILE, mode="r", newline="") as sfile:
         reader = csv.reader(sfile)
         student_rows = list(reader)
 
     if not student_rows or len(student_rows[0]) < 2:
-        print(" No valid student records found.")
+        print("No valid student records found.")
         return
-
-
-    # Read existing attendance (if any)
+        
     existing_attendance = []
     if os.path.exists(ATTENDANCE_FILE):
         with open(ATTENDANCE_FILE, mode="r", newline="") as afile:
             existing_attendance = list(csv.reader(afile))
 
-    # Prepare header
     header = ["ID", "Name", "Attendance", "Date"]
     new_attendance = []
 
@@ -134,7 +110,6 @@ def generate_report():
     for row in student_rows[1:]:  # Skip header
         student_id, name = row[0], row[1]
 
-        # Check if this student's attendance already exists for today
         already_marked = False
         for record in existing_attendance:
             if len(record) == 4 and record[0] == student_id and record[3] == date_today:
@@ -156,16 +131,38 @@ def generate_report():
                 status = ""
             new_attendance.append([student_id, name, status, date_today])
 
-    # Include previous records (excluding today's to avoid duplicate)
     previous_records = [r for r in existing_attendance if len(r) == 4 and r[3] != date_today]
 
-    # Write updated attendance
     with open(ATTENDANCE_FILE, mode="w", newline="") as afile:
         writer = csv.writer(afile)
         writer.writerow(header)
         writer.writerows(previous_records + new_attendance)
 
     print("\n Attendance saved in 'attendance.csv' and returning to main menu.")
+
+
+def generate_report():
+    
+    ATTENDANCE_FILE = "attendance.csv"
+
+    if not os.path.exists(ATTENDANCE_FILE):
+        print("Attendance file not found.")
+        return
+
+    date_today = datetime.now().strftime("%Y-%m-%d")
+    attendance_records = []
+
+    # Read existing students
+    with open(STUDENT_FILE, mode="r", newline="") as sfile:
+        reader = csv.reader(sfile)
+        student_rows = list(reader)
+
+    if not student_rows or len(student_rows[0]) < 2:
+        print(" No valid student records found.")
+        return
+
+    for row in student_rows[1:]:  # Skip header
+        student_id, name = row[0], row[1]
 
     header = rows[0]
     data_rows = rows[1:]
