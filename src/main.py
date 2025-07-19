@@ -1,8 +1,9 @@
-def generate_report():
-    import csv
-    import os
-    from datetime import datetime
+import csv
+import os
+from datetime import datetime
 
+def generate_report():
+    
     ATTENDANCE_FILE = "attendance.csv"
 
     if not os.path.exists(ATTENDANCE_FILE):
